@@ -1,0 +1,35 @@
+enable
+configure terminal
+hostname R-OSPF-2
+no ip domain-lookup
+interface GigabitEthernet0/0
+ description LAN_200_HOSTS
+ ip address 192.168.0.1 255.255.255.0
+ no shutdown
+ exit
+interface Serial0/1/0
+ description ENLACE_DIRECTO_OSPF
+ ip address 10.0.0.2 255.255.255.252
+ bandwidth 100000
+ ip ospf cost 20
+ no shutdown
+ exit
+interface Serial0/1/1
+ description HACIA_CENTRAL
+ ip address 10.0.0.10 255.255.255.252
+ bandwidth 100000
+ ip ospf cost 10
+ no shutdown
+ exit
+router ospf 1
+ router-id 2.2.2.2
+ passive-interface default
+ no passive-interface Serial0/1/0
+ no passive-interface Serial0/1/1
+ network 192.168.0.0 0.0.15.255 area 0
+ network 10.0.0.2 0.0.0.0 area 0
+ network 10.0.0.10 0.0.0.0 area 0
+ maximum-paths 2
+ exit
+end
+copy running-config startup-config

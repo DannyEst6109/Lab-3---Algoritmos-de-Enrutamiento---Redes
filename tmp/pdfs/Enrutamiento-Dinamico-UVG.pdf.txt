@@ -1,0 +1,288 @@
+
+--- PAGINA 1 ---
+REDES DE COMPUTADORAS  ·  SECCIÓN 10
+Enrutamiento Dinámico
+Mecanismos, tipos y protocolos principales: RIP , EIGRP , OSPF, IS-IS y BGP
+Kevin Velásquez
+
+--- PAGINA 2 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 02
+R U T A  D E  L A  S E S I Ó N
+Lo que vamos a recorrer hoy
+01 Fundamentos
+Por qué existe el enrutamiento dinámico y cómo funciona en general, sin importar el protocolo.
+02 Métricas
+El criterio que usa un router para decidir cuál camino es el mejor.
+03 Tipos de IGP
+Vector distancia y estado de enlace: dos formas distintas de construir la misma tabla.
+04 Un tercer tipo
+Vector de ruta — la familia a la que pertenece BGP , y por qué es distinta.
+05 Protocolos principales
+RIP , EIGRP , OSPF, IS-IS y BGP , uno por uno, con distancia administrativa y panorama final comparativo.
+
+--- PAGINA 3 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 03
+P U N T O  D E  P A R T I D A
+Enrutamiento estático frente a dinámico
+Estático
+• El administrador escribe cada ruta a mano.
+• Predecible y sin sobrecarga de procesamiento.
+• No se adapta solo: si un enlace cae, la ruta sigue 
+apuntando a un camino roto.
+Dinámico
+• Los routers intercambian información entre sí y arman la 
+tabla automáticamente.
+• Se adapta solo cuando la topología cambia.
+• Consume más CPU, memoria y ancho de banda que una 
+ruta estática.
+En redes grandes, o que cambian con frecuencia, mantener rutas estáticas a mano se vuelve inviable — ahí es donde el 
+enrutamiento dinámico deja de ser opcional.
+
+--- PAGINA 4 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 04
+E L  M E C A N I S M O  C O M Ú N
+Cómo funciona un protocolo de enrutamiento 
+dinámico
+Sin importar cuál protocolo uses, el ciclo de fondo es siempre el mismo.
+01 Descubrimiento de vecinos
+El router identifica a qué otros routers está conectado 
+directamente.
+02 Intercambio de información
+Comparte, o recibe, datos sobre las redes que conoce.
+03 Cálculo de la mejor ruta
+Aplica un algoritmo para decidir cuál camino conviene 
+entre varios posibles.
+04 Actualización de la tabla
+Instala esa ruta calculada en su tabla de enrutamiento.
+05 Reacción a cambios
+Si la topología cambia, el ciclo se repite hasta que la red 
+converge.
+Cuando dos protocolos distintos aprenden la misma red, el router usa la 
+distancia administrativa para decidir en cuál confiar —la vemos con 
+detalle más adelante.
+
+--- PAGINA 5 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 05
+E L  C R I T E R I O  D E  D E C I S I Ó N
+Métricas: cómo se calcula la “mejor” ruta
+Cuando hay más de un camino posible hacia el mismo destino, el router necesita un criterio para elegir. Ese criterio es la 
+métrica.
+Conteo de saltos
+Cuántos routers hay que atravesar hasta el 
+destino.
+Ancho de banda
+La capacidad del enlace —a mayor ancho de 
+banda, ruta más atractiva.
+Retardo (delay)
+El tiempo que tarda un bit en atravesar cada 
+enlace.
+Confiabilidad
+Qué tan estable ha sido ese enlace 
+históricamente.
+Carga (load)
+Qué tan ocupado está el enlace en este 
+momento.
+Costo
+Un valor asignado, muchas veces derivado 
+del ancho de banda.
+Cada protocolo elige uno o varios de estos valores como su propia fórmula —lo vemos protocolo por protocolo más adelante.
+
+--- PAGINA 6 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 06
+T I P O S  D E  I G P
+Vector distancia: el mecanismo
+Cada router comparte su tabla de enrutamiento completa con sus vecinos directos, de forma periódica.
+R1 R2 R3
+“Tabla completa” viaja entre vecinos directos — nunca salta a un router que no esté conectado.
+Enrutamiento por rumor: el router no conoce la topología completa de la red, solo confía en lo que le dicen sus vecinos.
+El algoritmo detrás de esta familia es Bellman-Ford: cada router recalcula su distancia a cada destino sumando lo que le reportael vecino 
+más la métrica de llegar hasta ese vecino.
+
+--- PAGINA 7 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 07
+T I P O S  D E  I G P
+Estado de enlace: el mecanismo
+Cada router envía información sobre sus propios enlaces a TODOS los routers del área, no solo a sus vecinos.
+R R
+R R
+R2
+R2 “inunda” (floods) el estado de sus propios enlaces a todos los routers del área a la vez.
+Cada router recibe esos anuncios de todos los demás, arma su propio mapa completo de la topología, y calcula su mejor ruta con el 
+algoritmo SPF (Dijkstra) —sin depender de que alguien más se la resuma.
+
+--- PAGINA 8 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 08
+T I P O S  D E  I G P
+Vector distancia frente a estado de enlace
+Vector distancia Estado de enlace
+Qué comparte Su tabla completa, con vecinos directos El estado de sus propios enlaces, con todos
+Vista de la red Parcial — solo lo que le reportan Completa — mapa propio de toda el área
+Convergencia Más lenta Más rápida
+Recursos Menor uso de CPU y memoria Mayor uso de CPU y memoria
+Riesgo de bucles Mayor — requiere mecanismos extra Menor — la vista completa lo evita
+Escalabilidad Limitada en redes grandes Mejor en redes grandes
+
+--- PAGINA 9 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 09
+U N  T E R C E R  T I P O
+Vector de ruta: la familia de BGP
+Vector distancia y estado de enlace resuelven el enrutamiento dentro de una misma red. El vector de ruta resuelve algo 
+distinto: cómo enrutar entre organizaciones.
+AS 300 AS 200 AS 100
+ruta X
+path = [300]
+ruta X
+path = [200, 300]
+ruta X
+path = [100, 200, 300]
+Cada ruta viaja con la lista completa de sistemas autónomos que ya atravesó (AS-Path), y esa lista crece en cada salto.
+Ese registro sirve para dos cosas: evitar bucles —si un AS se ve a sí mismo en la lista, descarta la ruta— y decidir el mejor camino no solo por 
+distancia, sino por política: qué tan confiable es cada AS en la ruta, no solo cuántos hay.
+
+--- PAGINA 10 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 10
+P R O T O C O L O S  P R I N C I P A L E S
+RIP — Routing Information Protocol
+El IGP más antiguo y sencillo de los cinco: vector distancia en 
+su forma más pura, con una sola métrica y sin sofisticación 
+adicional.
+• Familia: vector distancia.
+• Métrica: conteo de saltos (máximo 15; 16 significa 
+“inalcanzable”).
+• Actualizaciones periódicas completas, por defecto cada 30 
+segundos.
+• RIPv1 (classful) y RIPv2 (classless, soporta VLSM y 
+autenticación).
+Límite estructural
+15 saltos como máximo hace que RIP sea, por diseño, inviable en 
+redes grandes: cualquier destino más allá de ese límite queda 
+fuera de su alcance.
+Estado actual: en gran desuso. Sobrevive en redes muy pequeñas 
+o como caso de estudio, pero prácticamente ningún diseño 
+moderno lo elige como IGP principal.
+
+--- PAGINA 11 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 11
+P R O T O C O L O S  P R I N C I P A L E S
+EIGRP — Enhanced Interior Gateway Routing 
+Protocol
+Un vector distancia “avanzado” (híbrido): conserva la lógica de 
+vecinos directos, pero con mucha más inteligencia detrás.
+• Familia: vector distancia avanzado / híbrido.
+• Métrica: compuesta —por defecto, ancho de banda y retardo.
+• Algoritmo DUAL: convergencia muy rápida.
+• Originalmente propietario de Cisco.
+¿Qué hace especial a DUAL?
+Cada router guarda no solo su mejor ruta, sino también rutas de 
+respaldo ya calculadas (feasible successors). Si la principal falla, 
+usa la de respaldo al instante, sin recalcular desde cero.
+Estado actual: vigente en redes empresariales que corren equipo 
+Cisco. Sigue siendo una opción sólida donde OSPF también 
+aplicaría.
+
+--- PAGINA 12 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 12
+P R O T O C O L O S  P R I N C I P A L E S
+OSPF — Open Shortest Path First
+El estándar abierto de estado de enlace más usado en redes 
+empresariales hoy en día.
+• Familia: estado de enlace.
+• Métrica: costo, inversamente proporcional al ancho de banda.
+• Estándar abierto (IETF) —no depende de un solo fabricante.
+• Se organiza en áreas; el área 0 es el backbone.
+¿Para qué sirven las áreas?
+Dividir la red en áreas limita cuánto crece la base de datos de 
+estado de enlace de cada router —evita que una red enorme se 
+vuelva pesada de procesar.
+Estado actual: uno de los IGP más usados del mundo en redes 
+empresariales, precisamente por ser abierto y no atarte a un 
+fabricante.
+
+--- PAGINA 13 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 13
+P R O T O C O L O S  P R I N C I P A L E S
+IS-IS — Intermediate System to Intermediate 
+System
+El otro gran estado de enlace —mismo principio que OSPF, 
+pero con un origen y un público distintos.
+• Familia: estado de enlace (SPF / Dijkstra, igual que OSPF).
+• Métrica: costo simple por interfaz.
+• Se organiza en niveles (Level 1 / Level 2), no en áreas.
+• Nació en el mundo OSI, y se adaptó después para redes IP .
+¿Dónde se usa en la práctica?
+Es el favorito de operadores de redes grandes y proveedores de 
+internet: es estable a gran escala y no está atado a la familia de 
+direcciones IP .
+Estado actual: vigente, aunque menos visible que OSPF fuera del 
+mundo de los proveedores de servicio (ISP).
+
+--- PAGINA 14 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 14
+P R O T O C O L O S  P R I N C I P A L E S
+BGP — Border Gateway Protocol
+El único de los cinco que NO es un IGP: es un EGP — opera entre sistemas autónomos, no dentro de uno.
+• Familia: vector de ruta (path-vector).
+• Es, literalmente, el protocolo que mantiene unida a Internet.
+• eBGP: entre routers de sistemas autónomos distintos.
+• iBGP: entre routers que hablan BGP dentro del mismo AS.
+No es solo la ruta más corta
+BGP decide con varios atributos a la vez —entre ellos AS-Path, 
+preferencia local y origen—, así que la decisión es tanto técnica 
+como de política y negocio entre proveedores.
+Estado actual: vigente y sin sustituto — no existe una alternativa real para conectar redes de organizaciones distintas a escalade 
+Internet.
+
+--- PAGINA 15 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 15
+U N  C R I T E R I O  D I S T I N T O  A  L A  M É T R I C A
+Distancia administrativa
+Cuando dos fuentes de enrutamiento distintas aprenden una ruta hacia la misma red, el router necesita otro criterio para decidir —
+uno que no es la métrica.
+La distancia administrativa (AD) es un número del 0 al 255 que 
+indica qué tan confiable es cada fuente de enrutamiento: entre 
+más bajo, más se prefiere.
+No es lo mismo que la métrica
+La métrica elige la mejor ruta dentro de un mismo protocolo. La 
+AD elige entre protocolos distintos, cuando más de uno ofrece 
+una ruta hacia el mismo destino.
+La AD de una ruta estática se puede modificar —por defecto es 1, 
+pero se puede subir a propósito. Ese es el truco detrás de una ruta 
+estática flotante: el router la ignora mientras el protocolo dinámico 
+tenga una ruta viva, y la usa solo de respaldo si esa ruta 
+desaparece.
+0 Conectada directamente
+1 Estática (modificable)
+20 eBGP
+90 EIGRP (interna)
+110 OSPF
+115 IS-IS
+120 RIP
+170 EIGRP (externa)
+200 iBGP
+
+--- PAGINA 16 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 16
+S Í N T E S I S
+Panorama comparativo de los cinco protocolos
+Protocolo Familia Métrica Ámbito AD Vigencia
+RIP Vector distancia Conteo de saltos IGP 120 En desuso
+EIGRP Vector dist. avanzado Ancho de banda + retardo IGP 90 Vigente (Cisco)
+OSPF Estado de enlace Costo (ancho de banda) IGP 110 Vigente, muy usado
+IS-IS Estado de enlace Costo por interfaz IGP 115 Vigente (ISPs)
+BGP Vector de ruta Atributos (AS-Path y otros) EGP 20 Vigente — el de Internet
+
+--- PAGINA 17 ---
+Redes de Computadoras · Sección 10  ·  Kevin Velásquez 17
+C I E R R E
+Las cinco ideas que se llevan de hoy
+01 El enrutamiento dinámico automatiza lo que antes se hacía a mano
+Los routers intercambian información y recalculan solos cuando la topología cambia.
+02 Vector distancia y estado de enlace parten de una pregunta distinta
+Uno confía en lo que le dicen sus vecinos; el otro construye su propio mapa completo.
+03 La métrica y la AD resuelven dos preguntas distintas
+Una elige la mejor ruta dentro de un protocolo; la otra elige entre protocolos cuando compiten.
+04 BGP no es un IGP más
+Es de una tercera familia —vector de ruta— y opera entre organizaciones, no dentro de una sola red.
+05 Cada protocolo responde a un contexto distinto
+Tamaño de red, fabricante, y qué tan rápido necesitás que converja.
+Próxima actividad: la investigación asignada sobre estos protocolos.

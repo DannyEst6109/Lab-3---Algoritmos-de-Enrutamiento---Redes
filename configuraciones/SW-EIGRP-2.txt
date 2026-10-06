@@ -1,0 +1,13 @@
+enable
+configure terminal
+hostname SW-EIGRP-2
+no ip domain-lookup
+interface GigabitEthernet0/1
+ switchport mode access
+ exit
+interface FastEthernet0/1
+ switchport mode access
+ spanning-tree portfast
+ exit
+end
+copy running-config startup-config

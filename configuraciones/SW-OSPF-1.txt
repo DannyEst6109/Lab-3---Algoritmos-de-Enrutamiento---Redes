@@ -1,0 +1,29 @@
+enable
+configure terminal
+hostname SW-OSPF-1
+no ip domain-lookup
+vlan 10
+ name DATOS
+ exit
+vlan 30
+ name ADMIN
+ exit
+interface GigabitEthernet0/1
+ description TRUNK_ROUTER
+ switchport mode trunk
+ switchport trunk allowed vlan 10,30
+ exit
+interface FastEthernet0/1
+ description PC_DATOS
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast
+ exit
+interface FastEthernet0/2
+ description PC_ADMIN
+ switchport mode access
+ switchport access vlan 30
+ spanning-tree portfast
+ exit
+end
+copy running-config startup-config

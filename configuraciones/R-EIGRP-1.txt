@@ -1,0 +1,45 @@
+enable
+configure terminal
+hostname R-EIGRP-1
+no ip domain-lookup
+interface GigabitEthernet0/0
+ description TRUNK_SW_EIGRP_1
+ no shutdown
+ exit
+interface GigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 172.16.0.129 255.255.255.192
+ exit
+interface GigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 172.16.0.193 255.255.255.192
+ exit
+interface Serial0/1/0
+ description ENLACE_DIRECTO_EIGRP
+ ip address 10.0.0.13 255.255.255.252
+ bandwidth 100000
+ clock rate 64000
+ delay 300
+ no shutdown
+ exit
+interface Serial0/1/1
+ description HACIA_CENTRAL
+ ip address 10.0.0.18 255.255.255.252
+ bandwidth 100000
+ delay 1100
+ no shutdown
+ exit
+router eigrp 100
+ no auto-summary
+ passive-interface default
+ no passive-interface Serial0/1/0
+ no passive-interface Serial0/1/1
+ network 172.16.0.0 0.0.15.255
+ network 10.0.0.13 0.0.0.0
+ network 10.0.0.18 0.0.0.0
+ variance 4
+ maximum-paths 2
+ traffic-share balanced
+ exit
+end
+copy running-config startup-config
