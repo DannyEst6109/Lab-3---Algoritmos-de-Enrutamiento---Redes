@@ -1,0 +1,112 @@
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R-CENTRAL
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+license udi pid CISCO1941/K9 sn FTX15249QX5-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface GigabitEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/0/0
+ description HACIA_R_OSPF_1
+ bandwidth 100000
+ ip address 10.0.0.5 255.255.255.252
+ ip ospf cost 10
+ clock rate 64000
+!
+interface Serial0/0/1
+ description HACIA_R_OSPF_2
+ bandwidth 100000
+ ip address 10.0.0.9 255.255.255.252
+ ip ospf cost 10
+ clock rate 64000
+!
+interface Serial0/1/0
+ description HACIA_R_EIGRP_1
+ bandwidth 100000
+ ip address 10.0.0.17 255.255.255.252
+ delay 10
+ ip summary-address eigrp 100 192.168.0.0 255.255.254.0 5
+ clock rate 64000
+!
+interface Serial0/1/1
+ description HACIA_R_EIGRP_2
+ bandwidth 100000
+ ip address 10.0.0.21 255.255.255.252
+ delay 10
+ ip summary-address eigrp 100 192.168.0.0 255.255.254.0 5
+ clock rate 64000
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+access-list 10 permit 192.168.0.0 0.0.1.255
+access-list 20 permit 172.16.0.0 0.0.0.255
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
