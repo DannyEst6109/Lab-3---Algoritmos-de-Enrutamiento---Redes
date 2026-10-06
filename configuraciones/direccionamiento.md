@@ -23,4 +23,4 @@ Los gateways LAN usan el primer host utilizable. Los PCs de prueba usan el segun
 Resumen LAN OSPF: 192.168.0.0/23. Resumen LAN EIGRP: 172.16.0.0/24.
 Los resumenes se calculan a partir de las subredes usadas, no necesariamente de todo el bloque base /20.
 
-Estado: propuesta calculada; las evidencias de funcionamiento se deben obtener de Packet Tracer.
+Estado: direccionamiento aplicado. Evidencias reales en evidencias/ y PDF2; limitaciones en README_ENTREGA.md.

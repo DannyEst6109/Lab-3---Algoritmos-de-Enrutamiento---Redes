@@ -1,3 +1,1 @@
-Configuraciones preparadas, pendientes de aplicar y verificar en Packet Tracer.
-Las interfaces seriales de acceso observadas son Serial0/1/0 y Serial0/1/1.
-El archivo .pkt actualmente contiene dispositivos y solo un enlace serial.
+Configuración construida y verificada. Ver README_ENTREGA.md para estado final, variantes y limitaciones. R-CENTRAL_aplicado.txt es el export real de CENTRAL en la variante principal. Los archivos propuesta contienen comandos no compatibles con Packet Tracer.

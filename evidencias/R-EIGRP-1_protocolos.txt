@@ -1,0 +1,238 @@
+255K bytes of non-volatile configuration memory.
+249856K bytes of ATA System CompactFlash 0 (Read/Write)
+
+Press RETURN to get started!
+
+
+
+
+
+
+
+
+
+
+R-EIGRP-1 con0 is now available
+
+
+
+
+
+
+Press RETURN to get started.
+
+
+
+
+
+
+
+
+
+
+
+
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+
+%LINK-3-UPDOWN: Interface GigabitEthernet0/0.10, changed state to down
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0.10, changed state to up
+
+%LINK-3-UPDOWN: Interface GigabitEthernet0/0.20, changed state to down
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0.20, changed state to up
+
+%LINK-5-CHANGED: Interface Serial0/1/1, changed state to up
+
+%SYS-5-CONFIG_I: Configured from console by console
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial0/1/1, changed state to up
+
+%DUAL-5-NBRCHANGE: IP-EIGRP 100: Neighbor 10.0.0.17 (Serial0/1/1) is up: new adjacency
+
+
+R-EIGRP-1>enable
+R-EIGRP-1#copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R-EIGRP-1#
+%LINK-5-CHANGED: Interface Serial0/1/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial0/1/0, changed state to up
+
+%DUAL-5-NBRCHANGE: IP-EIGRP 100: Neighbor 10.0.0.14 (Serial0/1/0) is up: new adjacency
+
+
+
+
+
+
+
+
+
+R-EIGRP-1 con0 is now available
+
+
+
+
+
+
+Press RETURN to get started.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+R-EIGRP-1 con0 is now available
+
+
+
+
+
+
+Press RETURN to get started.
+
+
+
+
+
+
+
+
+
+
+
+
+
+R-EIGRP-1>en
+R-EIGRP-1#terminal length 0
+                   ^
+% Invalid input detected at '^' marker.
+	
+R-EIGRP-1#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/8 is variably subnetted, 8 subnets, 2 masks
+D EX    10.0.0.0/30 [170/332800] via 10.0.0.17, 00:12:05, Serial0/1/1
+D EX    10.0.0.4/30 [170/332800] via 10.0.0.17, 00:12:05, Serial0/1/1
+D EX    10.0.0.8/30 [170/332800] via 10.0.0.17, 00:12:05, Serial0/1/1
+C       10.0.0.12/30 is directly connected, Serial0/1/0
+L       10.0.0.13/32 is directly connected, Serial0/1/0
+C       10.0.0.16/30 is directly connected, Serial0/1/1
+L       10.0.0.18/32 is directly connected, Serial0/1/1
+D       10.0.0.20/30 [90/309760] via 10.0.0.17, 00:11:28, Serial0/1/1
+                     [90/384000] via 10.0.0.14, 00:11:22, Serial0/1/0
+     172.16.0.0/16 is variably subnetted, 5 subnets, 3 masks
+D       172.16.0.0/25 [90/102656] via 10.0.0.14, 00:11:22, Serial0/1/0
+                      [90/310016] via 10.0.0.17, 00:11:22, Serial0/1/1
+C       172.16.0.128/26 is directly connected, GigabitEthernet0/0.10
+L       172.16.0.129/32 is directly connected, GigabitEthernet0/0.10
+C       172.16.0.192/26 is directly connected, GigabitEthernet0/0.20
+L       172.16.0.193/32 is directly connected, GigabitEthernet0/0.20
+D    192.168.0.0/23 [90/819200] via 10.0.0.17, 00:12:05, Serial0/1/1
+
+R-EIGRP-1#show ip eigrp topology
+IP-EIGRP Topology Table for AS 100/ID(172.16.0.193)
+
+Codes: P - Passive, A - Active, U - Update, Q - Query, R - Reply,
+       r - Reply status
+
+P 10.0.0.0/30, 1 successors, FD is 332800
+         via Rstatic (332800/51200)
+P 10.0.0.4/30, 1 successors, FD is 332800
+         via Rstatic (332800/51200)
+P 10.0.0.8/30, 1 successors, FD is 332800
+         via Rstatic (332800/51200)
+P 10.0.0.12/30, 1 successors, FD is 102400
+         via Connected, Serial0/1/0
+P 10.0.0.16/30, 1 successors, FD is 307200
+         via Connected, Serial0/1/1
+P 10.0.0.20/30, 2 successors, FD is 309760
+         via 10.0.0.17 (309760/28160), Serial0/1/1
+         via 10.0.0.14 (384000/307200), Serial0/1/0
+P 172.16.0.0/25, 2 successors, FD is 102656
+         via 10.0.0.14 (102656/2816), Serial0/1/0
+         via 10.0.0.17 (310016/28416), Serial0/1/1
+P 172.16.0.128/26, 1 successors, FD is 28160
+         via Connected, GigabitEthernet0/0.10
+P 172.16.0.192/26, 1 successors, FD is 28160
+         via Connected, GigabitEthernet0/0.20
+P 192.168.0.0/23, 1 successors, FD is 819200
+         via 10.0.0.17 (819200/537600), Serial0/1/1
+R-EIGRP-1#show ip route 172.16.0.0
+Routing entry for 172.16.0.0/16, 5 known subnets
+  Attached (4 connections)
+  Variably subnetted with 3 masks
+  Redistributing via eigrp 100, eigrp 100, eigrp 100, eigrp 100
+D       172.16.0.0/25 [90/102656] via 10.0.0.14, 00:11:59, Serial0/1/0
+                      [90/310016] via 10.0.0.17, 00:11:59, Serial0/1/1
+C       172.16.0.128/26 is directly connected, GigabitEthernet0/0.10
+        172.16.0.129/32 is directly connected, GigabitEthernet0/0.10
+C       172.16.0.192/26 is directly connected, GigabitEthernet0/0.20
+        172.16.0.193/32 is directly connected, GigabitEthernet0/0.20
+
+R-EIGRP-1#show ip protocols
+
+Routing Protocol is "eigrp  100 " 
+  Outgoing update filter list for all interfaces is not set 
+  Incoming update filter list for all interfaces is not set 
+  Default networks flagged in outgoing updates  
+  Default networks accepted from incoming updates 
+  Redistributing: eigrp 100
+  EIGRP-IPv4 Protocol for AS(100)
+    Metric weight K1=1, K2=0, K3=1, K4=0, K5=0
+    NSF-aware route hold timer is 240
+    Router-ID: 10.0.0.13
+    Topology : 0 (base)
+      Active Timer: 3 min
+      Distance: internal 90 external 170
+      Maximum path: 4
+      Maximum hopcount 100
+      Maximum metric variance 4
+
+  Automatic Summarization: disabled
+  Automatic address summarization: 
+  Maximum path: 4
+  Routing for Networks:  
+     172.16.0.0/20
+     10.0.0.13/32
+     10.0.0.18/32
+  Passive Interface(s): 
+    Vlan1
+    GigabitEthernet0/0
+    GigabitEthernet0/1
+    GigabitEthernet0/0.10
+    GigabitEthernet0/0.20
+  Routing Information Sources:  
+    Gateway         Distance      Last Update 
+    10.0.0.17       90            3157625    
+    10.0.0.14       90            3202564    
+  Distance: internal 90 external 170
+
+R-EIGRP-1#
