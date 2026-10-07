@@ -1,1 +1,0 @@
-Configuración construida y verificada. Ver README_ENTREGA.md para estado final, variantes y limitaciones. R-CENTRAL_aplicado.txt es el export real de CENTRAL en la variante principal. Los archivos propuesta contienen comandos no compatibles con Packet Tracer.

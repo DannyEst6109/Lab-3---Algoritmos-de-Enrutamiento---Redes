@@ -1,0 +1,8 @@
+# Respaldos e intermedios locales
+.local/
+tmp/
+__pycache__/
+*.pyc
+
+# Paquetes generados
+*.zip
